@@ -5,25 +5,24 @@ import static android.view.View.VISIBLE;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.notepad.database.DataManager;
 import com.example.notepad.database.NoteDiaryEntity;
 import com.example.notepad.databinding.ActivityHomeBinding;
 import com.example.notepad.view.adapter.HomeAdapter;
+import com.example.notepad.view.adapter.OnClickListener;
 import com.example.notepad.view.viewmodel.HomeViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity implements OnClickListener {
     private ActivityHomeBinding binding;
     private HomeAdapter adapter;
     private HomeViewModel viewModel;
@@ -36,6 +35,7 @@ public class HomeActivity extends AppCompatActivity {
 
         adapter = new HomeAdapter();
         adapter.setNoteDiaryEntityList(new ArrayList<>());
+        adapter.setListener(this);
 
         viewModel = new ViewModelProvider(this).get(HomeViewModel.class);
         viewModel.setAppDatabase(DataManager.getInstance().createDatabase(this));
@@ -67,5 +67,18 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    public void onUpdate(NoteDiaryEntity note) {
+        Intent intent = new Intent(HomeActivity.this, AddNewDiaryActivity.class);
+        intent.putExtra("note_id", note.getId());
+        startActivity(intent);
+    }
+
+    @Override
+    public void onDelete(NoteDiaryEntity note) {
+        viewModel.deleteNote(note);
+        viewModel.getData();
     }
 }

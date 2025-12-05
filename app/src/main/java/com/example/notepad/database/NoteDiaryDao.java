@@ -13,6 +13,9 @@ public interface NoteDiaryDao {
     @Query("SELECT * FROM  NoteDiaryEntity ORDER BY id DESC")
     List<NoteDiaryEntity> getAll();
 
+    @Query("SELECT * FROM NoteDiaryEntity WHERE id = :noteId LIMIT 1")
+    NoteDiaryEntity getNoteById(int noteId);
+
     @Insert
     void insertNoteDiary(NoteDiaryEntity note);
 

@@ -16,11 +16,16 @@ import java.util.List;
 
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     private List<NoteDiaryEntity> noteDiaryEntityList = new ArrayList<>();
+    private OnClickListener listener;
 
     public void setNoteDiaryEntityList(List<NoteDiaryEntity> noteDiaryEntityList) {
         this.noteDiaryEntityList.clear();
         this.noteDiaryEntityList.addAll(noteDiaryEntityList);
         notifyDataSetChanged();
+    }
+
+    public void setListener(OnClickListener listener) {
+        this.listener = listener;
     }
 
     @NonNull
@@ -74,6 +79,25 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             }
 
             //binding.imgFeelNote.setImageResource(noteDiaryEntity.getImgFeel());
+
+            binding.getRoot().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null) {
+                        listener.onUpdate(noteDiaryEntity);
+                    }
+                }
+            });
+
+            binding.getRoot().setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    if (listener != null){
+                        listener.onDelete(noteDiaryEntity);
+                    }
+                    return true;
+                }
+            });
         }
     }
 }

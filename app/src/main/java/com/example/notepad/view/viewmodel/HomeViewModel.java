@@ -24,4 +24,8 @@ public class HomeViewModel extends ViewModel {
         List<NoteDiaryEntity> notes =appDatabase.noteDiaryDao().getAll();
         diaryList.setValue(notes);
     }
+
+    public void deleteNote(NoteDiaryEntity note) {
+        appDatabase.noteDiaryDao().deleteNoteDiary(note);
+    }
 }
