@@ -1,5 +1,6 @@
 package com.example.notepad.view.viewmodel;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -27,5 +28,9 @@ public class HomeViewModel extends ViewModel {
 
     public void deleteNote(NoteDiaryEntity note) {
         appDatabase.noteDiaryDao().deleteNoteDiary(note);
+    }
+
+    public LiveData<List<NoteDiaryEntity>> searchNote(String searchNote) {
+        return appDatabase.noteDiaryDao().searchDiary(searchNote);
     }
 }

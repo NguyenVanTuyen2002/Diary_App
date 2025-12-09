@@ -1,5 +1,6 @@
 package com.example.notepad.database;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -27,4 +28,9 @@ public interface NoteDiaryDao {
 
     @Query("DELETE FROM NoteDiaryEntity")
     void deleteAll();
+
+    @Query("SELECT * FROM NoteDiaryEntity WHERE title LIKE '%' || :query || '%' " +
+            "OR content LIKE '%' || :query || '%' ORDER BY id DESC")
+    LiveData<List<NoteDiaryEntity>> searchDiary(String query);
+
 }

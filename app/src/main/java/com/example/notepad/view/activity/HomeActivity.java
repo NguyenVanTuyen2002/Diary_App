@@ -5,6 +5,8 @@ import static android.view.View.VISIBLE;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 
 import androidx.annotation.Nullable;
@@ -59,6 +61,49 @@ public class HomeActivity extends AppCompatActivity implements OnClickListener {
         });
 
         viewModel.getData();
+
+
+
+        binding.edtSearchHome.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String key = s.toString();
+
+                if (key.isEmpty()) {
+                    viewModel.getData();
+                }else {
+                    viewModel.searchNote(key).observe(HomeActivity.this, new Observer<List<NoteDiaryEntity>>() {
+                        @Override
+                        public void onChanged(List<NoteDiaryEntity> noteDiaryEntities) {
+                            adapter.setNoteDiaryEntityList(noteDiaryEntities);
+
+                            if (noteDiaryEntities != null && !key.isEmpty()) {
+                                binding.listNoteDiary.setVisibility(VISIBLE);
+                                binding.imgNoteHome.setVisibility(GONE);
+                                binding.imgNoteHome.setVisibility(GONE);
+                            }else {
+                                binding.listNoteDiary.setVisibility(GONE);
+                                binding.imgNoteHome.setVisibility(VISIBLE);
+                                binding.txtNoteHome.setVisibility(VISIBLE);
+                            }
+                        }
+                    });
+
+                }
+            }
+        });
+
+
 
         binding.btnNewDiary.setOnClickListener(new View.OnClickListener() {
             @Override
