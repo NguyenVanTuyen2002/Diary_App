@@ -46,6 +46,9 @@ public class AddNewDiaryActivity extends AppCompatActivity {
             }
         });
 
+
+
+        // ktra nếu noteId == -1 thì là tạo mới, noteId != -1 thì là sửa
         int noteId = getIntent().getIntExtra("note_id", -1);
 
         if (noteId != -1) {
